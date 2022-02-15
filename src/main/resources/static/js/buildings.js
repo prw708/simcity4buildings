@@ -189,8 +189,8 @@ class BuildingContainer extends React.Component {
 	}
 	
 	handleScroll() {
-		if ((window.innerHeight + window.scrollY === document.body.scrollHeight) || 
-			(window.innerHeight + window.pageYOffset === document.body.scrollHeight)) {
+		if ((Math.ceil(window.innerHeight) + Math.ceil(window.scrollY) >= Math.ceil(document.body.scrollHeight)) || 
+			(Math.ceil(window.innerHeight) + Math.ceil(window.pageYOffset) >= Math.ceil(document.body.scrollHeight))) {
 			this.getSize()
 				.then(function(buildingsSize) {					
 					if (this.size < buildingsSize) {
