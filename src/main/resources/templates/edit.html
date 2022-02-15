@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edit Building - Simcity 4 Buildings</title>
+
+<link rel="icon" type="image/png" href="/images/favicon.png" />
+<link href="/css/main.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+<script 
+  id="recaptchaAPI"
+  type="text/javascript"
+  src="https://www.google.com/recaptcha/api.js"
+></script>
+<script type="text/javascript" src="/js/formHandlers.js"></script>
+
+</head>
+
+<body>
+	<div id="overlay">
+	
+		<div th:replace="home :: baseHeader"></div>
+	
+		<div class="position-relative container-fluid px-0">
+			<header class="row p-4 g-0">
+				<h1 class="display-3">Edit Building</h1>
+			</header>
+			<noscript>
+				<div class="alert alert-danger px-4 mb-0">Please enable JavaScript to load all elements.</div>
+			</noscript>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${notLoggedInError}"
+			>You are not logged in.</div>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${buildingNotFoundError}"
+			>This building does not exist.</div>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${recaptchaError}"
+			>Invalid recaptcha.</div>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${errors != null}"
+			>There are errors listed below.</div>
+		</div>
+		
+		<div class="row g-0">
+			<div class="d-flex flex-column flex-shrink-0 p-4 text-white bg-light col-sm-5 col-md-4 col-lg-3">
+			    <a href="/" class="d-flex align-items-center mb-0 me-md-auto link-dark text-decoration-none">
+			      <span class="fs-4">Actions</span>
+			    </a>
+			    <hr class="link-dark">
+			    <ul class="nav nav-pills flex-column mb-4">
+			      <li class="nav-item">
+			        <a href="/" class="nav-link link-dark">
+			          View All Buildings
+			        </a>
+			      </li>
+			      <li>
+			        <a href="/add" class="nav-link active">
+			          Add Building
+			        </a>
+			      </li>
+			      <li>
+			        <a href="/delete" class="nav-link link-dark">
+			          Delete Building
+			        </a>
+			      </li>
+			     </ul>
+			     <span class="link-dark fs-4">Account</span>
+			     <hr class="link-dark">
+			     <ul class="nav nav-pills flex-column mb-0">
+			      <li class="nav-item" th:if="${loggedInAs}">
+			      	<a href="/additions" class="nav-link link-dark">
+			      		Addition Approvals
+			      	</a>
+			      </li>
+			      <li class="nav-item" th:if="${loggedInAs}">
+			      	<a href="/deletions" class="nav-link link-dark">
+			      		Deletion Approvals
+			      	</a>
+			      </li>
+			      <li class="nav-item">
+			        <form method="POST" th:action="@{/logout}" th:if="${loggedInAs}">
+						<button type="submit" 
+							name="logout" 
+							value="true"
+							class="nav-link link-dark w-100 text-start"
+							>Logout</button>
+					</form>
+					<a href="/account/login" class="nav-link link-dark" th:unless="${loggedInAs}">Login</a>
+			      </li>
+			    </ul>
+			</div>
+			<div class="col-sm-7 col-md-8 col-lg-9 pt-4 px-4">
+				<form
+				th:if="${!buildingNotFoundError}"
+		        method="POST"
+		        id="5-form"
+		        th:action="@{'/edit/' + ${building.id} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}}"
+		        th:object="${addForm}"
+		        enctype="multipart/form-data"
+			    >
+			   		<div class="advanced-form mb-4">
+			       	  <label class="form-label" for="aEmail">Email</label>
+			          <input
+			            type="text"
+			            class="form-control"
+			            th:field="*{aEmail}"
+			            value=""
+			            maxlength="50"
+			            autocomplete="off"
+			            tabindex="-1"
+			          >
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aPhone">Name</label>
+			          <input
+			            type="text"
+			            th:class="${#fields.hasErrors('aPhone')} ? 'form-control is-invalid' : 'form-control'"
+			           	th:value="*{aPhone}"
+			            th:field="*{aPhone}"
+			            maxlength="200"
+			            autocomplete="off"
+			          >
+			          <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aPhone')}"
+			          >
+			          	Can contain A-Z, a-z, 0-9, -, ., ,, !, ', (, ), and spaces.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aFirstName">Occupancy</label>
+			          <input
+			            type="text"
+			            th:class="${#fields.hasErrors('aFirstName')} ? 'form-control is-invalid' : 'form-control'"
+			            th:value="*{aFirstName}"
+			            th:field="*{aFirstName}"
+			            maxlength="4"
+			            autocomplete="off"
+			          >
+			          <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aFirstName')}"
+			          >
+			          	Can contain 0-9.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aWebsite">Type</label>
+			          <select
+			          	th:class="${#fields.hasErrors('aWebsite')} ? 'form-select is-invalid' : 'form-select'"
+			          	th:field="*{aWebsite}"
+			          >
+			          	<option th:selected="(*{aWebsite}=='R-$')" value="R-$">Low Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='R-$$')" value="R-$$">Medium Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='R-$$$')" value="R-$$$">High Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$')" value="CS-$">Low Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$$')" value="CS-$$">Medium Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$$$')" value="CS-$$$">High Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CO-$$')" value="CO-$$">Medium Wealth Commercial Office</option>
+			          	<option th:selected="(*{aWebsite}=='CO-$$$')" value="CO-$$$">High Wealth Commercial Office</option>
+			          	<option th:selected="(*{aWebsite}=='I-AG')" value="I-AG">Agriculture</option>
+			          	<option th:selected="(*{aWebsite}=='I-D')" value="I-D">Dirty Industrial</option>
+			          	<option th:selected="(*{aWebsite}=='I-M')" value="I-M">Manufacturing Industrial</option>
+			          	<option th:selected="(*{aWebsite}=='I-HT')" value="I-HT">High Tech Industrial</option>
+					  </select>
+					  <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aWebsite')}"
+			          >
+			          	Must be a valid building type.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aLastName">Tiles</label>
+			          <select
+			          	th:class="${#fields.hasErrors('aLastName')} ? 'form-select is-invalid' : 'form-select'"
+			          	th:field="*{aLastName}"
+			          >
+			          	<option th:selected="(*{aLastName}=='1x1')" value="1x1">1x1</option>
+			          	<option th:selected="(*{aLastName}=='1x2')" value="1x2">1x2</option>
+			          	<option th:selected="(*{aLastName}=='1x3')" value="1x3">1x3</option>
+			          	<option th:selected="(*{aLastName}=='1x4')" value="1x4">1x4</option>
+			          	<option th:selected="(*{aLastName}=='2x1')" value="2x1">2x1</option>
+			          	<option th:selected="(*{aLastName}=='2x2')" value="2x2">2x2</option>
+			          	<option th:selected="(*{aLastName}=='2x3')" value="2x3">2x3</option>
+			          	<option th:selected="(*{aLastName}=='2x4')" value="2x4">2x4</option>
+			          	<option th:selected="(*{aLastName}=='3x1')" value="3x1">3x1</option>
+			          	<option th:selected="(*{aLastName}=='3x2')" value="3x2">3x2</option>
+			          	<option th:selected="(*{aLastName}=='3x3')" value="3x3">3x3</option>
+			          	<option th:selected="(*{aLastName}=='3x4')" value="3x4">3x4</option>
+			          	<option th:selected="(*{aLastName}=='4x1')" value="4x1">4x1</option>
+			          	<option th:selected="(*{aLastName}=='4x2')" value="4x2">4x2</option>
+			          	<option th:selected="(*{aLastName}=='4x3')" value="4x3">4x3</option>
+			          	<option th:selected="(*{aLastName}=='4x4')" value="4x4">4x4</option>
+					  </select>
+					  <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aLastName')}"
+			          >
+			          	Must be a valid tile size.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aCreated">Style</label>
+			          <select
+			          	th:class="${#fields.hasErrors('aCreated')} ? 'form-select is-invalid' : 'form-select'"
+			          	th:field="*{aCreated}"
+			          >
+			          	<option th:selected="(*{aCreated}=='None')" value="None">None</option>
+			          	<option th:selected="(*{aCreated}=='1890 Chicago')" value="1890 Chicago">1890 Chicago</option>
+			          	<option th:selected="(*{aCreated}=='1940 New York')" value="1940 New York">1940 New York</option>
+			          	<option th:selected="(*{aCreated}=='1990 Houston')" value="1990 Houston">1990 Houston</option>
+			          	<option th:selected="(*{aCreated}=='Euro Contemporary')" value="Euro Contemporary">Euro Contemporary</option>
+					  </select>
+					  <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aCreated')}"
+			          >
+			          	Must be a valid building style.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aAddress">Last Updated</label>
+			          <input
+			            type="text"
+			            th:class="${#fields.hasErrors('aAddress')} ? 'form-control is-invalid' : 'form-control'"
+			            th:value="${#dates.format(aAddress, 'yyyy/MM/dd HH:mm:ss')}"
+			            th:field="*{aAddress}"
+			            maxlength="50"
+			            autocomplete="off"
+			            readonly
+			          >
+			          <div 
+			          	class="invalid-feedback"
+			          	th:if="${#fields.hasErrors('aAddress')}"
+			          >
+			          	Must be a valid date and time.
+			          </div>
+			        </div>
+			        <div class="mb-4">
+			          <label class="form-label" for="aFile">Photo (1MB limit)</label>
+			          <input
+			            type="file"
+			            th:class="${imageFileError} ? 'form-control is-invalid' : 'form-control'"
+			           	name="aFile"
+			           	id="aFile"     
+			            maxlength="200"
+			            autocomplete="off"
+			          >
+			          <div 
+			          	class="invalid-feedback"
+			          	th:if="${imageFileError}"
+			          >
+			          	Must be a valid image file.
+			          </div>
+			        </div>
+			        <div class="pb-4">
+			          <button
+			            type="submit"
+			            class="btn btn-secondary mb-2 g-recaptcha"
+			            th:attr="data-sitekey=${recaptchaSiteKey}"
+					    data-callback="editSubmit"
+					    data-action="edit"
+			          >Edit</button>
+			        </div>
+				</form>
+			</div>
+		</div>
+		
+		<div th:replace="home :: baseFooter"></div>
+		
+	</div>
+</body>
+
+</html>

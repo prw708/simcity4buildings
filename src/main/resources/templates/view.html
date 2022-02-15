@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta th:attr="content=${recaptchaSiteKey}" name="recaptchaSiteKey">
+<title>View Building - Simcity 4 Buildings</title>
+
+<link rel="icon" type="image/png" href="/images/favicon.png" />
+<link href="/css/main.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+<script 
+  id="recaptchaAPI"
+  type="text/javascript"
+  th:attr="src='https://www.google.com/recaptcha/api.js?render=' + ${recaptchaSiteKey}"
+></script>
+<script type="text/javascript" src="/js/formHandlers.js"></script>
+
+</head>
+
+<body>
+	<div id="overlay">
+	
+		<div th:replace="home :: baseHeader"></div>
+	
+		<div class="position-relative container-fluid px-0">
+			<header class="row p-4 g-0">
+				<h1 class="display-3">View Building</h1>
+			</header>
+			<noscript>
+				<div class="alert alert-danger px-4 mb-0">Please enable JavaScript to load all elements.</div>
+			</noscript>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${buildingNotFoundError}"
+			>This building does not exist.</div>
+			<div 
+			  class="alert alert-danger px-4 mb-0"
+			  th:if="${notAdminError}"
+			>Admin privileges required.</div>
+		</div>
+		
+		<div class="row g-0">
+			<div class="d-flex flex-column flex-shrink-0 p-4 text-white bg-light col-sm-5 col-md-4 col-lg-3">
+			    <a href="/" class="d-flex align-items-center mb-0 me-md-auto link-dark text-decoration-none">
+			      <span class="fs-4">Actions</span>
+			    </a>
+			    <hr class="link-dark">
+			    <ul class="nav nav-pills flex-column mb-4">
+			      <li class="nav-item">
+			        <a href="/" class="nav-link link-dark">
+			          View All Buildings
+			        </a>
+			      </li>
+			      <li>
+			        <a href="/add" class="nav-link link-dark">
+			          Add Building
+			        </a>
+			      </li>
+			      <li>
+			        <a href="/delete" class="nav-link link-dark">
+			          Delete Building
+			        </a>
+			      </li>
+			     </ul>
+			     <span class="link-dark fs-4">Account</span>
+			     <hr class="link-dark">
+			     <ul class="nav nav-pills flex-column mb-0">
+			      <li class="nav-item" th:if="${loggedInAs}">
+			      	<a href="/additions" class="nav-link link-dark">
+			      		Addition Approvals
+			      	</a>
+			      </li>
+			      <li class="nav-item" th:if="${loggedInAs}">
+			      	<a href="/deletions" class="nav-link link-dark">
+			      		Deletion Approvals
+			      	</a>
+			      </li>
+			      <li class="nav-item">
+			        <form method="POST" th:action="@{/logout}" th:if="${loggedInAs}">
+						<button type="submit" 
+							name="logout" 
+							value="true"
+							class="nav-link link-dark w-100 text-start"
+							>Logout</button>
+					</form>
+					<a href="/account/login" class="nav-link link-dark" th:unless="${loggedInAs}">Login</a>
+			      </li>
+			    </ul>
+			</div>
+			<div class="col-sm-7 col-md-8 col-lg-9 pt-4 px-4">
+				<div 
+					th:if="${buildingNotFoundError}"
+					class="row g-0 mb-4"
+				>
+					<p class="mb-0">The building does not exist.</p>
+				</div>
+				<div 
+					th:if="${notAdminError}"
+					class="row g-0 mb-4"
+				>
+					<p class="mb-0">Admin privileges required.</p>
+				</div>
+				<div 
+					th:if="${!buildingNotFoundError and !notAdminError and !pending and loggedIn}"
+					class="row g-0 mb-4"
+				>
+	    			<div class="col-8 col-sm-9">
+						<span class="fs-2">Building</span>
+	    			</div>
+					<div class="col-4 col-sm-3 d-flex align-items-end flex-row-reverse">
+						<form 
+							method="POST" 
+							th:attr="id=${building.id}"
+							th:action="@{/delete}"
+						>
+							<input type="hidden" name="recaptcha">
+						    <input type="hidden" name="buildingId" th:value="${building.id}">
+						    <div class="advanced-form mb-4">
+								<label class="form-label" for="dEmail">Email</label>
+							    <input
+							    	type="text"
+							        class="form-control"
+							        name="dEmail"
+							        id="dEmail"
+							        value=""
+							        maxlength="50"
+							        autocomplete="off"
+							        tabindex="-1"
+							    >
+							</div>
+								<button type="submit" 
+									class="btn btn-link link-dark m-0 p-0 ms-3"
+									onclick="deleteHandler(event)"
+								>Delete</button>
+						</form>
+						<a class="btn btn-link link-dark m-0 p-0 ms-3" th:href="@{'/edit/' + ${building.id}}">Edit</a>
+					</div>
+				</div>
+				<div 
+					th:if="${!buildingNotFoundError and !notAdminError}"
+					class="row g-4 mb-4"
+				>
+    				<div class="col-12 col-sm-5 text-center">
+    				    <img 
+    						th:if="${#strings.isEmpty(building.binaryImageToString())}"
+    						class="img-fluid" 
+    						th:src="@{'/images/building_image.png'}"
+    						th:attr="alt=${building.name}"
+    					>
+    					<img 
+    					    th:unless="${#strings.isEmpty(building.binaryImageToString())}"
+    						class="img-fluid" 
+    						th:src="@{'data:image/png;base64,' + ${building.binaryImageToString()}}"
+    						th:attr="alt=${building.name}"
+    					>
+    				</div>
+    				<div class="col-12 col-sm-7">
+    				    <h3 class="mb-2" th:text="${building.name}"></h3>
+      					<h5 class="text-muted mb-3" th:text="'Occupancy: ' + ${building.occupancy}"></h5>
+      					<div th:switch="${building.type}">
+      						<h6 class="mb-2" th:case="'R-$'" th:text="'Type: Low Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'R-$$'" th:text="'Type: Medium Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'R-$$$'" th:text="'Type: High Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$'" th:text="'Type: Low Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$$'" th:text="'Type: Medium Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$$$'" th:text="'Type: High Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CO-$$'" th:text="'Type: Medium Wealth Commercial Office'"></h6>
+      						<h6 class="mb-2" th:case="'CO-$$$'" th:text="'Type: High Wealth Commercial Office'"></h6>
+      						<h6 class="mb-2" th:case="'I-AG'" th:text="'Type: Agriculture'"></h6>
+      						<h6 class="mb-2" th:case="'I-D'" th:text="'Type: Dirty Industrial'"></h6>
+      						<h6 class="mb-2" th:case="'I-M'" th:text="'Type: Manufacturing Industrial'"></h6>
+      						<h6 class="mb-2" th:case="'I-HT'" th:text="'Type: High Tech Industrial'"></h6>
+      					</div>
+      					<h6 class="mb-2" th:text="'Tiles: ' + ${building.tiles}"></h6>
+      					<h6 class="mb-2" th:text="'Style: ' + ${building.style}"></h6>
+      					<small class="mb-2" th:text="'Last Updated: ' + ${lastUpdated}"></small>
+    				</div>
+				</div>
+			</div>
+		</div>
+		
+		<div th:replace="home :: baseFooter"></div>
+		
+	</div>
+</body>
+
+</html>
