@@ -3,7 +3,25 @@ const CARDS_PER_ROW = 4;
 class SearchBar extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			update: null
+		};
+		this.debounceChange = this.debounceChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+	}
+	
+	debounceChange(event) {
+		this.props.onSearching(true);
+		return function() {
+			clearTimeout(this.state.update);
+			this.setState({
+				update: setTimeout(function() {
+					this.setState({ update: null });
+					this.handleChange.apply(this, [event]);
+					this.props.onSearching(false);
+				}.bind(this), 2000)
+			});
+		}.bind(this);
 	}
 	
 	handleChange(event) {
@@ -18,7 +36,7 @@ class SearchBar extends React.Component {
 				autoComplete: "off", 
 				maxLength: 200, 
 				value: this.props.searchBarText, 
-				onChange: this.handleChange 
+				onChange: (e) => this.debounceChange(e)()
 			}, null)
 		);
 	}
@@ -127,20 +145,38 @@ class BuildingContainer extends React.Component {
 			orderBy: "lastUpdated",
 			buildings: null,
 			loading: true,
-			scrolling: false
+			scrolling: false,
+			searching: false
 		};
 		this.inv = false;
 		this.size = CARDS_PER_ROW;
+		this.handleSearching = this.handleSearching.bind(this);
 		this.handleSearchBarTextChange = this.handleSearchBarTextChange.bind(this);
 		this.handleOrderByChange = this.handleOrderByChange.bind(this);
 		this.handleScroll = this.handleScroll.bind(this);
+	}
+	
+	handleSearching(searching) {
+		this.setState({
+			searching: searching
+		});
 	}
 	
 	handleSearchBarTextChange(text) {
 		this.setState({
 			loading: true
 		});
-		this.getAllBuildings(this.state.orderBy)
+		this.getSize()
+			.then(function(size) {
+				var viewableSize;
+				if (!text) {
+					viewableSize = CARDS_PER_ROW;
+					this.size = CARDS_PER_ROW;
+				} else {
+					viewableSize = size;
+				}
+				return this.getAllBuildings(this.state.orderBy, viewableSize);
+			}.bind(this))
 			.then(function(allBuildings) {
 				if (text) {
 					var filteredBuildings = allBuildings.filter( (building) => building.name.toLowerCase().includes(text.toLowerCase()) );
@@ -175,10 +211,11 @@ class BuildingContainer extends React.Component {
 			this.inv = false;
 		}
 		this.size = CARDS_PER_ROW;
-		this.getAllBuildings(type)
+		this.getAllBuildings(type, this.size)
 			.then(function(allBuildings) {
 				this.setState({
-					loading: false
+					loading: false,
+					buildings: allBuildings
 				});
 			}.bind(this))
 			.catch(function(err) {
@@ -189,20 +226,22 @@ class BuildingContainer extends React.Component {
 	}
 	
 	handleScroll() {
+		if (this.state.loading || this.state.scrolling || this.state.searching) {
+			return false;
+		}
 		if ((Math.ceil(window.innerHeight) + Math.ceil(window.scrollY) >= Math.ceil(document.body.scrollHeight)) || 
 			(Math.ceil(window.innerHeight) + Math.ceil(window.pageYOffset) >= Math.ceil(document.body.scrollHeight))) {
 			this.getSize()
-				.then(function(buildingsSize) {					
-					if (this.size < buildingsSize) {
+				.then(function(buildingsSize) {
+					if (this.size < buildingsSize && !this.state.searchBarText) {
 						this.setState({
 							scrolling: true
 						});
 						this.size += CARDS_PER_ROW;
-						return this.getAllBuildings(this.state.orderBy);
 					} else {
 						this.size = buildingsSize;
-						return Promise.reject(null);
 					}
+					return this.getAllBuildings(this.state.orderBy, this.size);
 				}.bind(this))
 				.then(function(allBuildings) {
 					if (this.state.searchBarText) {
@@ -233,7 +272,7 @@ class BuildingContainer extends React.Component {
 		this.setState({
 			loading: true
 		});
-		this.getAllBuildings(this.state.orderBy)
+		this.getAllBuildings(this.state.orderBy, this.size)
 			.then(function(allBuildings) {
 				this.setState({
 					loading: false
@@ -271,14 +310,14 @@ class BuildingContainer extends React.Component {
 		}.bind(this));
 	}
 	
-	getAllBuildings(type) {
+	getAllBuildings(type, size) {
 		return new Promise(function(resolve, reject) {
 			var httpRequest = new XMLHttpRequest();
 			var path = "/buildings";
 			if (this.inv) {
-				path += "?size=" + this.size.toString() + "&sort=" + type + ",asc";
+				path += "?size=" + size.toString() + "&sort=" + type + ",asc";
 			} else {
-				path += "?size=" + this.size.toString() + "&sort=" + type + ",desc";
+				path += "?size=" + size.toString() + "&sort=" + type + ",desc";
 			}
 			httpRequest.open("GET", path, true);
 			httpRequest.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -302,7 +341,7 @@ class BuildingContainer extends React.Component {
 	
 	render() {
 		return React.createElement("div", {}, 
-			React.createElement(SearchBar, { onSearchBarTextChange: this.handleSearchBarTextChange }, null),
+			React.createElement(SearchBar, { onSearchBarTextChange: this.handleSearchBarTextChange, onSearching: this.handleSearching }, null),
 			React.createElement(OrderBy, { onOrderByChange: this.handleOrderByChange }, null),
 			React.createElement(BuildingList, { buildings: this.state.buildings, loading: this.state.loading, scrolling: this.state.scrolling }, null)
 		);
