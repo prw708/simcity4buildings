@@ -230,7 +230,7 @@ public class BuildingController {
 		}
 		if (!isAdmin()) {
 			model.addAttribute("notAdminError", true);
-			model.addAttribute("buildingNotFoundError", false);
+			model.addAttribute("buildingNotFoundError", true);
 			model.addAttribute("loggedInAs", loggedInAs);
 			model.addAttribute("admin", isAdmin());
 			model.addAttribute("errors", null);
@@ -238,6 +238,7 @@ public class BuildingController {
 			return "view";
 		} else {
 			model.addAttribute("notAdminError", false);
+			model.addAttribute("buildingNotFoundError", false);
 		}
 		model.addAttribute("loggedInAs", loggedInAs);
 		model.addAttribute("admin", isAdmin());

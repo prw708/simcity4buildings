@@ -39,7 +39,7 @@
 			<div 
 			  class="alert alert-danger px-4 mb-0"
 			  th:if="${buildingNotFoundError}"
-			>This building does not exist.</div>
+			>The building does not exist.</div>
 			<div 
 			  class="alert alert-danger px-4 mb-0"
 			  th:if="${recaptchaError}"
@@ -99,6 +99,12 @@
 			    </ul>
 			</div>
 			<div class="col-sm-7 col-md-8 col-lg-9 pt-4 px-4">
+				<div 
+					th:if="${buildingNotFoundError}"
+					class="row g-0 mb-4"
+				>
+					<p class="mb-0">The building does not exist.</p>
+				</div>
 				<form
 				th:if="${!buildingNotFoundError}"
 		        method="POST"

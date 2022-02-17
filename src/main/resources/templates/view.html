@@ -35,8 +35,8 @@
 			</noscript>
 			<div 
 			  class="alert alert-danger px-4 mb-0"
-			  th:if="${buildingNotFoundError}"
-			>This building does not exist.</div>
+			  th:if="${buildingNotFoundError  and !notAdminError}"
+			>The building does not exist.</div>
 			<div 
 			  class="alert alert-danger px-4 mb-0"
 			  th:if="${notAdminError}"
@@ -93,7 +93,7 @@
 			</div>
 			<div class="col-sm-7 col-md-8 col-lg-9 pt-4 px-4">
 				<div 
-					th:if="${buildingNotFoundError}"
+					th:if="${buildingNotFoundError and !notAdminError}"
 					class="row g-0 mb-4"
 				>
 					<p class="mb-0">The building does not exist.</p>
