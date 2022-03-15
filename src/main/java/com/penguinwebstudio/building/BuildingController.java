@@ -671,7 +671,7 @@ public class BuildingController {
 		List<Building> buildings = buildingService.getAllBuildingsByDeletion();
 		model.addAttribute("buildings", buildings);
 		if (bindingResult.hasErrors() || !removeDeletionForm.getdPhone().isEmpty()) {
-			model.addAttribute("errors", removeDeletionForm.getRecaptcha());
+			model.addAttribute("errors", removeDeletionForm.getdPhone());
 			//model.addAttribute("errors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			model.addAttribute("loggedInAs", loggedInAs);
