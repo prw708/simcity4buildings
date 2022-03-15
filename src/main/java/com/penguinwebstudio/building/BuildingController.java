@@ -482,7 +482,8 @@ public class BuildingController {
 		List<PendingAddition> buildings = buildingService.getAllPendingBuildings();
 		model.addAttribute("buildings", buildings);
 		if (bindingResult.hasErrors() || !removeAdditionForm.getaPhone().isEmpty()) {
-			model.addAttribute("errors", true);
+			model.addAttribute("errors", removeAdditionForm.getRecaptcha());
+			//model.addAttribute("errors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			model.addAttribute("loggedInAs", loggedInAs);
 			model.addAttribute("admin", isAdmin());
