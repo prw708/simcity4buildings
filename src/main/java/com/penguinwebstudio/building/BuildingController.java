@@ -103,7 +103,7 @@ public class BuildingController {
 			BindingResult bindingResult, 
 			Model model, 
 			@RequestParam("aFile") MultipartFile imageFile,
-			@NotBlank @Size(min=1, max=500) @Pattern(regexp="^[A-Za-z0-9\\-_]+$") @RequestParam(value = "g-recaptcha-response") String recaptcha,
+			@NotBlank @Size(min=1, max=1000) @Pattern(regexp="^[A-Za-z0-9\\-_]+$") @RequestParam(value = "g-recaptcha-response") String recaptcha,
 			RedirectAttributes attr
 	) {
 		DateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -291,7 +291,7 @@ public class BuildingController {
 			BindingResult bindingResult, 
 			Model model, 
 			@RequestParam("aFile") MultipartFile imageFile,
-			@NotBlank @Size(min=1, max=500) @Pattern(regexp="^[A-Za-z0-9\\-_]+$") @RequestParam(value = "g-recaptcha-response") String recaptcha,
+			@NotBlank @Size(min=1, max=1000) @Pattern(regexp="^[A-Za-z0-9\\-_]+$") @RequestParam(value = "g-recaptcha-response") String recaptcha,
 			@Pattern(regexp="^[A-Za-z0-9]+$") @PathVariable String buildingId,
 			RedirectAttributes attr
 	) {
@@ -671,8 +671,7 @@ public class BuildingController {
 		List<Building> buildings = buildingService.getAllBuildingsByDeletion();
 		model.addAttribute("buildings", buildings);
 		if (bindingResult.hasErrors() || !removeDeletionForm.getdPhone().isEmpty()) {
-			model.addAttribute("errors", bindingResult.getAllErrors().toString());
-			//model.addAttribute("errors", true);
+			model.addAttribute("errors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			model.addAttribute("loggedInAs", loggedInAs);
 			model.addAttribute("admin", isAdmin());
