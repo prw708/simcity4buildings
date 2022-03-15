@@ -618,8 +618,7 @@ public class BuildingController {
 		List<Building> buildings = buildingService.getAllBuildingsByDeletion();
 		model.addAttribute("buildings", buildings);
 		if (bindingResult.hasErrors() || !deleteForm.getdEmail().isEmpty()) {
-			model.addAttribute("errors", deleteForm.getRecaptcha());
-			//model.addAttribute("errors", true);
+			model.addAttribute("errors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			model.addAttribute("loggedInAs", loggedInAs);
 			model.addAttribute("admin", isAdmin());
@@ -672,7 +671,8 @@ public class BuildingController {
 		List<Building> buildings = buildingService.getAllBuildingsByDeletion();
 		model.addAttribute("buildings", buildings);
 		if (bindingResult.hasErrors() || !removeDeletionForm.getdPhone().isEmpty()) {
-			model.addAttribute("errors", true);
+			model.addAttribute("errors", removeDeletionForm.getRecaptcha());
+			//model.addAttribute("errors", true);
 			model.addAttribute("recaptchaSiteKey", recaptchaSiteKey);
 			model.addAttribute("loggedInAs", loggedInAs);
 			model.addAttribute("admin", isAdmin());
