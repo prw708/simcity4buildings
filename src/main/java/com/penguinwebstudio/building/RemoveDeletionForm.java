@@ -14,7 +14,7 @@ public class RemoveDeletionForm {
 	String buildingId;
 	
 	@NotBlank 
-	@Size(min=1, max=500) 
+	@Size(min=1, max=1000)
 	@Pattern(regexp="^[A-Za-z0-9\\-_]+$")
 	String recaptcha;
 	
