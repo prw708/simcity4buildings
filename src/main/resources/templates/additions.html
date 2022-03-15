@@ -102,80 +102,82 @@
 			</div>
 			<div class="col-sm-7 col-md-8 col-lg-9 p-4">
 				<span class="fs-2">Buildings for Addition</span>
-				<table class="table align-middle my-4">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Last Updated</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="building : ${buildings}">
-							<td>
-								<a th:href="@{'/view/pending/' + ${building.id}}" th:text="${building.name}"></a>
-							</td>
-							<td th:text="${#dates.format(building.lastUpdated, 'yyyy/MM/dd')}"></td>
-							<td>
-								<form 
-									th:if="${admin}"
-									method="POST" 
-									th:attr="id=${building.id}"
-									th:action="@{/additions}"
-									class="d-inline m-0 p-0"
-								>
-						        	<input type="hidden" name="recaptcha">
-						        	<input type="hidden" name="buildingId" th:value="${building.id}">
-						        	<div class="advanced-form mb-4">
-							       	  <label class="form-label" for="aEmail">Email</label>
-							          <input
-							            type="text"
-							            class="form-control"
-							            name="aEmail"
-							            id="aEmail"
-							            value=""
-							            maxlength="50"
-							            autocomplete="off"
-							            tabindex="-1"
-							          >
-							        </div>
-									<button type="submit" 
-										class="btn btn-sm btn-secondary me-2 mb-0 mb-sm-2 mb-md-0"
-										onclick="additionHandler(event)"
-										>Add</button>
-								</form>
-								<form 
-									th:if="${admin}"
-									method="POST" 
-									th:attr="id=${building.id}"
-									th:action="@{/additions/remove}"
-									class="d-inline m-0 p-0"
-								>
-						        	<input type="hidden" name="recaptcha">
-						        	<input type="hidden" name="buildingId" th:value="${building.id}">
-						        	<div class="advanced-form mb-4">
-							       	  <label class="form-label" for="aPhone">Phone</label>
-							          <input
-							            type="text"
-							            class="form-control"
-							            name="aPhone"
-							            id="aPhone"
-							            value=""
-							            maxlength="50"
-							            autocomplete="off"
-							            tabindex="-1"
-							          >
-							        </div>
-									<button type="submit" 
-										class="btn btn-sm btn-outline-secondary me-2 mb-0 mb-sm-2 mb-md-0"
-										onclick="removeAdditionHandler(event)"
-										>Remove</button>
-								</form>
-								<small th:unless="${admin}">Admin privileges required.</small>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive-md">
+					<table class="table align-middle my-4">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Last Updated</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="building : ${buildings}">
+								<td>
+									<a th:href="@{'/view/pending/' + ${building.id}}" th:text="${building.name}"></a>
+								</td>
+								<td th:text="${#dates.format(building.lastUpdated, 'yyyy/MM/dd')}"></td>
+								<td>
+									<form 
+										th:if="${admin}"
+										method="POST" 
+										th:attr="id=${building.id}"
+										th:action="@{/additions}"
+										class="d-inline m-0 p-0"
+									>
+							        	<input type="hidden" name="recaptcha">
+							        	<input type="hidden" name="buildingId" th:value="${building.id}">
+							        	<div class="advanced-form mb-4">
+								       	  <label class="form-label" for="aEmail">Email</label>
+								          <input
+								            type="text"
+								            class="form-control"
+								            name="aEmail"
+								            id="aEmail"
+								            value=""
+								            maxlength="50"
+								            autocomplete="off"
+								            tabindex="-1"
+								          >
+								        </div>
+										<button type="submit" 
+											class="btn btn-sm btn-secondary me-2 mb-0 mb-sm-2 mb-md-0"
+											onclick="additionHandler(event)"
+											>Add</button>
+									</form>
+									<form 
+										th:if="${admin}"
+										method="POST" 
+										th:attr="id=${building.id}"
+										th:action="@{/additions/remove}"
+										class="d-inline m-0 p-0"
+									>
+							        	<input type="hidden" name="recaptcha">
+							        	<input type="hidden" name="buildingId" th:value="${building.id}">
+							        	<div class="advanced-form mb-4">
+								       	  <label class="form-label" for="aPhone">Phone</label>
+								          <input
+								            type="text"
+								            class="form-control"
+								            name="aPhone"
+								            id="aPhone"
+								            value=""
+								            maxlength="50"
+								            autocomplete="off"
+								            tabindex="-1"
+								          >
+								        </div>
+										<button type="submit" 
+											class="btn btn-sm btn-outline-secondary me-2 mb-0 mb-sm-2 mb-md-0"
+											onclick="removeAdditionHandler(event)"
+											>Remove</button>
+									</form>
+									<small th:unless="${admin}">Admin privileges required.</small>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		
