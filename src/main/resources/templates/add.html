@@ -153,18 +153,18 @@
 			          	th:class="${#fields.hasErrors('aWebsite')} ? 'form-select is-invalid' : 'form-select'"
 			          	th:field="*{aWebsite}"
 			          >
-			          	<option th:selected="(*{aWebsite}=='R-$')" value="R-$">Low Wealth Residential</option>
-			          	<option th:selected="(*{aWebsite}=='R-$$')" value="R-$$">Medium Wealth Residential</option>
-			          	<option th:selected="(*{aWebsite}=='R-$$$')" value="R-$$$">High Wealth Residential</option>
-			          	<option th:selected="(*{aWebsite}=='CS-$')" value="CS-$">Low Wealth Commercial Service</option>
-			          	<option th:selected="(*{aWebsite}=='CS-$$')" value="CS-$$">Medium Wealth Commercial Service</option>
-			          	<option th:selected="(*{aWebsite}=='CS-$$$')" value="CS-$$$">High Wealth Commercial Service</option>
-			          	<option th:selected="(*{aWebsite}=='CO-$$')" value="CO-$$">Medium Wealth Commercial Office</option>
-			          	<option th:selected="(*{aWebsite}=='CO-$$$')" value="CO-$$$">High Wealth Commercial Office</option>
-			          	<option th:selected="(*{aWebsite}=='I-AG')" value="I-AG">Agriculture</option>
-			          	<option th:selected="(*{aWebsite}=='I-D')" value="I-D">Dirty Industrial</option>
-			          	<option th:selected="(*{aWebsite}=='I-M')" value="I-M">Manufacturing Industrial</option>
-			          	<option th:selected="(*{aWebsite}=='I-HT')" value="I-HT">High Tech Industrial</option>
+			          	<option th:selected="(*{aWebsite}=='R-$')" value="R-$">Low-Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='R-$$')" value="R-$$">Medium-Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='R-$$$')" value="R-$$$">High-Wealth Residential</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$')" value="CS-$">Low-Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$$')" value="CS-$$">Medium-Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CS-$$$')" value="CS-$$$">High-Wealth Commercial Service</option>
+			          	<option th:selected="(*{aWebsite}=='CO-$$')" value="CO-$$">Medium-Wealth Commercial Office</option>
+			          	<option th:selected="(*{aWebsite}=='CO-$$$')" value="CO-$$$">High-Wealth Commercial Office</option>
+			          	<option th:selected="(*{aWebsite}=='I-AG')" value="I-AG">Industrial - Agriculture</option>
+			          	<option th:selected="(*{aWebsite}=='I-D')" value="I-D">Industrial - Dirty</option>
+			          	<option th:selected="(*{aWebsite}=='I-M')" value="I-M">Industrial - Manufacturing</option>
+			          	<option th:selected="(*{aWebsite}=='I-HT')" value="I-HT">Industrial - High Tech</option>
 					  </select>
 					  <div 
 			          	class="invalid-feedback"

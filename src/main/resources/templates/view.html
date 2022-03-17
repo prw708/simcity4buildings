@@ -162,18 +162,18 @@
     				    <h3 class="mb-2" th:text="${building.name}"></h3>
       					<h5 class="text-muted mb-3" th:text="'Occupancy: ' + ${building.occupancy}"></h5>
       					<div th:switch="${building.type}">
-      						<h6 class="mb-2" th:case="'R-$'" th:text="'Type: Low Wealth Residential'"></h6>
-      						<h6 class="mb-2" th:case="'R-$$'" th:text="'Type: Medium Wealth Residential'"></h6>
-      						<h6 class="mb-2" th:case="'R-$$$'" th:text="'Type: High Wealth Residential'"></h6>
-      						<h6 class="mb-2" th:case="'CS-$'" th:text="'Type: Low Wealth Commercial Service'"></h6>
-      						<h6 class="mb-2" th:case="'CS-$$'" th:text="'Type: Medium Wealth Commercial Service'"></h6>
-      						<h6 class="mb-2" th:case="'CS-$$$'" th:text="'Type: High Wealth Commercial Service'"></h6>
-      						<h6 class="mb-2" th:case="'CO-$$'" th:text="'Type: Medium Wealth Commercial Office'"></h6>
-      						<h6 class="mb-2" th:case="'CO-$$$'" th:text="'Type: High Wealth Commercial Office'"></h6>
-      						<h6 class="mb-2" th:case="'I-AG'" th:text="'Type: Agriculture'"></h6>
-      						<h6 class="mb-2" th:case="'I-D'" th:text="'Type: Dirty Industrial'"></h6>
-      						<h6 class="mb-2" th:case="'I-M'" th:text="'Type: Manufacturing Industrial'"></h6>
-      						<h6 class="mb-2" th:case="'I-HT'" th:text="'Type: High Tech Industrial'"></h6>
+      						<h6 class="mb-2" th:case="'R-$'" th:text="'Type: Low-Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'R-$$'" th:text="'Type: Medium-Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'R-$$$'" th:text="'Type: High-Wealth Residential'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$'" th:text="'Type: Low-Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$$'" th:text="'Type: Medium-Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CS-$$$'" th:text="'Type: High-Wealth Commercial Service'"></h6>
+      						<h6 class="mb-2" th:case="'CO-$$'" th:text="'Type: Medium-Wealth Commercial Office'"></h6>
+      						<h6 class="mb-2" th:case="'CO-$$$'" th:text="'Type: High-Wealth Commercial Office'"></h6>
+      						<h6 class="mb-2" th:case="'I-AG'" th:text="'Type: Industrial - Agriculture'"></h6>
+      						<h6 class="mb-2" th:case="'I-D'" th:text="'Type: Industrial - Dirty '"></h6>
+      						<h6 class="mb-2" th:case="'I-M'" th:text="'Type: Industrial - Manufacturing'"></h6>
+      						<h6 class="mb-2" th:case="'I-HT'" th:text="'Type: Industrial - High Tech'"></h6>
       					</div>
       					<h6 class="mb-2" th:text="'Tiles: ' + ${building.tiles}"></h6>
       					<h6 class="mb-2" th:text="'Style: ' + ${building.style}"></h6>
