@@ -1,0 +1,31 @@
+{
+  "name": "buildings",
+  "version": "1.0.0",
+  "description": "This is an app that allows users to view, add, and delete SimCity 4 buildings from the database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prw708/simcity4buildings.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prw708/simcity4buildings/issues"
+  },
+  "homepage": "https://github.com/prw708/simcity4buildings#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "core-js": "^3.21.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7"
+  }
+}
