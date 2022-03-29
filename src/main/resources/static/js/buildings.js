@@ -195,9 +195,9 @@ var BuildingList = /*#__PURE__*/function (_React$Component3) {
       if (this.props.loading) {
         return React.createElement("div", {
           className: "text-center mb-4"
-        }, React.createElement("div", {
+        }, React.createElement("span", {
           className: "spinner-border"
-        }, ""));
+        }, null));
       } else if (!this.props.buildings || this.props.buildings.length === 0) {
         return React.createElement("p", {
           className: "mb-4"
@@ -238,9 +238,9 @@ var BuildingList = /*#__PURE__*/function (_React$Component3) {
         if (this.props.scrolling) {
           scrolling = React.createElement("div", {
             className: "text-center my-4"
-          }, React.createElement("div", {
+          }, React.createElement("span", {
             className: "spinner-border"
-          }, ""));
+          }, null));
         }
 
         return React.createElement("div", {}, React.createElement("div", {
