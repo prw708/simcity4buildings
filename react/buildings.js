@@ -87,7 +87,7 @@ class BuildingList extends React.Component {
 		const cards = [];
 		if (this.props.loading) {
 			return React.createElement("div", { className: "text-center mb-4" }, 
-				React.createElement("div", { className: "spinner-border" }, null)
+				React.createElement("div", { className: "spinner-border" }, "")
 			);
 		} else if (!this.props.buildings || this.props.buildings.length === 0) {
 			return React.createElement("p", { className: "mb-4" }, "No buildings to show.");
@@ -117,7 +117,7 @@ class BuildingList extends React.Component {
 			var scrolling = null;
 			if (this.props.scrolling) {
 				scrolling = React.createElement("div", { className: "text-center my-4" }, 
-					React.createElement("div", { className: "spinner-border" }, null)
+					React.createElement("div", { className: "spinner-border" }, "")
 				);
 			}
 			return React.createElement("div", {}, 

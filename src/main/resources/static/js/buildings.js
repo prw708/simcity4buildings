@@ -197,7 +197,7 @@ var BuildingList = /*#__PURE__*/function (_React$Component3) {
           className: "text-center mb-4"
         }, React.createElement("div", {
           className: "spinner-border"
-        }, null));
+        }, ""));
       } else if (!this.props.buildings || this.props.buildings.length === 0) {
         return React.createElement("p", {
           className: "mb-4"
@@ -240,7 +240,7 @@ var BuildingList = /*#__PURE__*/function (_React$Component3) {
             className: "text-center my-4"
           }, React.createElement("div", {
             className: "spinner-border"
-          }, null));
+          }, ""));
         }
 
         return React.createElement("div", {}, React.createElement("div", {
